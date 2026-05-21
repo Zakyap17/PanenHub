@@ -21,7 +21,7 @@
         .status-dikirim { background: #f3e5f5; color: #7b1fa2; }
         .status-selesai { background: #e8f5e9; color: #2e7d32; }
         .empty-state { padding: 80px 20px; text-align: center; }
-        .empty-state i { font-size: 4rem; color: #c8e6c9; margin-bottom: 15px; display: block; }
+        .empty-state > i { font-size: 4rem; color: #c8e6c9; margin-bottom: 15px; display: block; }
         .order-card { background: #fff; border-radius: 16px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.06); overflow: hidden; transition: 0.3s; }
         .order-card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
     </style>
