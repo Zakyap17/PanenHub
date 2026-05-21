@@ -200,7 +200,7 @@
                 </div>
                 <div class="p-4 border-top d-flex justify-content-between align-items-center">
                     <h3 class="fw-bold text-success mb-0" id="totalPriceDisplay">Rp 0</h3>
-                    <button class="btn btn-checkout" onclick="alert('Checkout Berhasil!')">Checkout Sekarang</button>
+                    <button class="btn btn-checkout" onclick="showCustomAlert('Checkout Berhasil!')">Checkout Sekarang</button>
                 </div>
             </div>
         </div>
@@ -218,6 +218,20 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // --- JS LOGIC ---
+    function showCustomAlert(message, isError = false) {
+        var bg = isError ? 'rgba(220, 53, 69, 0.95)' : 'rgba(46, 125, 50, 0.95)';
+        var icon = isError ? 'bi-x-circle-fill' : 'bi-check-circle-fill';
+        var title = isError ? 'Terjadi Kesalahan' : 'Berhasil!';
+        
+        var toast = document.createElement('div');
+        toast.innerHTML = '<div class="mb-3"><i class="bi ' + icon + '" style="font-size: 3.5rem; display: block;"></i></div>' + 
+                         '<div class="fw-bold fs-4 mb-2">' + title + '</div>' +
+                         '<div class="small opacity-75 mb-4">' + message + '</div>' +
+                         '<button class="btn btn-light fw-bold rounded-pill px-4 text-success" onclick="this.parentElement.remove()">Oke</button>';
+        toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:' + bg + ';backdrop-filter:blur(10px);color:#fff;padding:40px 50px;border-radius:24px;z-index:9999;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);animation:zoomIn .4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;text-align:center;min-width:320px;border:1px solid rgba(255,255,255,0.1);';
+        document.body.appendChild(toast);
+    }
+
     const SESSION_KEY = "active_user";
     let cart = [];
     let currentUser = JSON.parse(sessionStorage.getItem(SESSION_KEY));
@@ -261,7 +275,7 @@
             headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
             body: JSON.stringify(data)
         });
-        if (res.ok) { alert("Berhasil!"); openLogin(); }
+        if (res.ok) { showCustomAlert("Berhasil!"); openLogin(); }
     }
 
     async function loginUser(e) {
@@ -279,7 +293,7 @@
         if (res.ok) {
             sessionStorage.setItem(SESSION_KEY, JSON.stringify(result.user));
             location.reload();
-        } else { alert("Gagal!"); }
+        } else { showCustomAlert("Gagal!", true); }
     }
 
     function logout() { sessionStorage.clear(); location.reload(); }
