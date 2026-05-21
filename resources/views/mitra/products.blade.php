@@ -26,7 +26,7 @@
         .badge-category { background: #e8f5e9; color: #2e7d32; font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 50px; }
         .badge-stock { background: #fff3e0; color: #e65100; font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 50px; }
         .empty-state { padding: 80px 20px; text-align: center; }
-        .empty-state i { font-size: 4rem; color: #c8e6c9; margin-bottom: 15px; display: block; }
+        .empty-state > i { font-size: 4rem; color: #c8e6c9; margin-bottom: 15px; display: block; }
     </style>
 </head>
 <body>
