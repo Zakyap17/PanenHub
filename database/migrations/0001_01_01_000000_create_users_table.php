@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('password');
             
             $table->string('role')->default('pembeli'); 
+            $table->string('nik')->nullable();
             $table->string('phone')->nullable();        
             $table->string('address')->nullable();  
             

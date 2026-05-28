@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <title>Pesanan Saya | PanenHub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -184,7 +183,6 @@
         </a>
         <div class="d-flex align-items-center gap-3">
             <span class="fw-bold me-2">Hai, {{ Auth::user()->name }}</span>
-            <a href="{{ route('chat.index') }}" class="btn btn-link text-success text-decoration-none fw-bold small"><i class="bi bi-chat-dots-fill"></i> Chat Penawaran</a>
             <a href="{{ route('home') }}" class="btn btn-outline-success rounded-pill px-4 fw-bold">Belanja Lagi</a>
         </div>
     </div>
@@ -208,7 +206,7 @@
                 <div class="d-flex align-items-center flex-wrap gap-2">
                     <span class="badge bg-success" style="font-size: 0.7rem; padding: 4px 8px;">Star</span>
                     <span class="fw-bold text-dark" style="font-size: 1rem; border-right: 1px solid #ddd; padding-right: 12px;">{{ $order->mitra->name ?? 'Mitra PanenHub' }}</span>
-                    <a href="{{ route('chat.index') }}" class="btn btn-sm btn-success ms-1" style="font-size: 0.75rem; padding: 2px 10px;"><i class="bi bi-chat-dots-fill"></i> Chat</a>
+                    <button class="btn btn-sm btn-success ms-1" style="font-size: 0.75rem; padding: 2px 10px;"><i class="bi bi-chat-dots-fill"></i> Chat</button>
                     <a href="#" class="btn btn-sm btn-outline-secondary ms-1" style="font-size: 0.75rem; padding: 2px 10px;"><i class="bi bi-shop"></i> Kunjungi Toko</a>
                 </div>
                 <div class="d-flex align-items-center gap-3">
