@@ -345,11 +345,16 @@
                             <div class="product-price mb-0">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
                             <span class="badge {{ $product->stock > 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }} border-0">Stok: {{ $product->stock }}</span>
                         </div>
-                        @if($product->stock > 0)
-                            <button class="btn-add-cart" onclick="addToCart('product-{{ $product->id }}','{{ addslashes($product->name) }}', {{ (int)$product->price }}, '{{ $imagePath }}', '{{ addslashes($product->user->name ?? 'Mitra PanenHub') }}')"><i class="bi bi-cart-plus"></i> Tambah</button>
-                        @else
-                            <button class="btn-add-cart" style="background:#e0e0e0; color:#888; cursor:not-allowed;" disabled><i class="bi bi-x-circle"></i> Produk Habis</button>
-                        @endif
+                        <div class="d-grid gap-2">
+                            @if($product->stock > 0)
+                                <button class="btn-add-cart" onclick="addToCart('product-{{ $product->id }}','{{ addslashes($product->name) }}', {{ (int)$product->price }}, '{{ $imagePath }}', '{{ addslashes($product->user->name ?? 'Mitra PanenHub') }}')"><i class="bi bi-cart-plus"></i> Tambah</button>
+                            @else
+                                <button class="btn-add-cart" style="background:#e0e0e0; color:#888; cursor:not-allowed;" disabled><i class="bi bi-x-circle"></i> Produk Habis</button>
+                            @endif
+                            <button class="btn btn-outline-success btn-sm w-100 py-2 mt-1" style="border-radius: 8px; font-weight: 600;" onclick="openOfferModal('{{ addslashes($product->name) }}', '{{ addslashes($product->user->name ?? 'Mitra PanenHub') }}', {{ $product->user_id ?? 'null' }}, {{ (int)$product->price }})">
+                                <i class="bi bi-chat-dots-fill"></i> Kontrak Pra-Panen
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -579,6 +584,58 @@
                     </div>
 
                     <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-pill shadow-sm" style="font-size: 1.1rem;">Bayar Sekarang</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL AJUKAN PENAWARAN (KONTRAK PRA-PANEN) ===== -->
+<div class="modal fade" id="offerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0" style="border-radius: 16px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold text-success"><i class="bi bi-chat-dots-fill me-2"></i> Ajukan Penawaran Kontrak</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form onsubmit="submitOffer(event)">
+                    @csrf
+                    <input type="hidden" name="mitra_id" id="offer_mitra_id">
+                    <input type="hidden" name="product_name" id="offer_product_name">
+                    <input type="hidden" name="farmer_name" id="offer_farmer_name">
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Nama Hasil Panen</label>
+                        <input type="text" id="offer_product_name_display" class="form-control bg-light border-0 py-2" readonly disabled>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Mitra Tani / Petani</label>
+                        <input type="text" id="offer_farmer_name_display" class="form-control bg-light border-0 py-2" readonly disabled>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">Jumlah Penawaran (kg)</label>
+                            <input type="number" name="offer_qty" id="offer_qty" class="form-control bg-light border-0 py-2" min="1" placeholder="Contoh: 100" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small fw-bold text-muted">Harga per kg (Rp)</label>
+                            <input type="number" name="offer_price" id="offer_price" class="form-control bg-light border-0 py-2" min="1" placeholder="Contoh: 12000" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-muted">Catatan Negosiasi (Opsional)</label>
+                        <textarea name="notes" id="offer_notes" class="form-control bg-light border-0" rows="3" placeholder="Tuliskan pesan negosiasi, syarat kualitas, atau jadwal panen yang Anda harapkan..."></textarea>
+                    </div>
+
+                    <div class="alert alert-warning bg-warning-subtle border-0 small">
+                        <i class="bi bi-info-circle me-1"></i> Setelah mengajukan penawaran, chat room negosiasi otomatis dibuat untuk berdiskusi dengan Mitra Tani.
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100 py-3 fw-bold rounded-pill shadow-sm" style="font-size: 1.1rem;">Kirim Penawaran</button>
                 </form>
             </div>
         </div>
@@ -1008,6 +1065,62 @@
             }, 400);
         }
     });
+
+    function openOfferModal(productName, farmerName, mitraId, price) {
+        if (!isAuthenticated) {
+            openLogin();
+            return;
+        }
+        document.getElementById('offer_product_name_display').value = productName;
+        document.getElementById('offer_product_name').value = productName;
+        document.getElementById('offer_farmer_name_display').value = farmerName;
+        document.getElementById('offer_farmer_name').value = farmerName;
+        document.getElementById('offer_mitra_id').value = mitraId;
+        document.getElementById('offer_price').value = price;
+        document.getElementById('offer_qty').value = 100; // Default 100kg
+        document.getElementById('offer_notes').value = '';
+
+        new bootstrap.Modal(document.getElementById('offerModal')).show();
+    }
+
+    function submitOffer(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch('/api/penawaran/submit', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw err; });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const modalEl = document.getElementById('offerModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+
+                showCustomAlert("Penawaran berhasil dikirim! Mengalihkan ke halaman chat negosiasi...", false);
+                setTimeout(() => {
+                    window.location.href = data.redirect_url;
+                }, 1500);
+            } else {
+                showCustomAlert(data.error || "Gagal mengirim penawaran.", true);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showCustomAlert(error.error || error.message || "Terjadi kesalahan sistem saat mengirim penawaran.", true);
+        });
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         getCart();

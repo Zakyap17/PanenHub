@@ -26,9 +26,15 @@ class ChatController extends Controller
 
         $buyer = Auth::user();
 
-        // Cari mitra pertama yang terdaftar sebagai target (demo: mitra pertama)
-        // Di masa depan bisa dihubungkan ke product->user_id
-        $mitra = User::where('role', 'mitra')->first();
+        // Cari mitra target dari request, fallback ke mitra pertama jika tidak disediakan
+        $mitra = null;
+        if ($request->has('mitra_id') && $request->mitra_id) {
+            $mitra = User::where('role', 'mitra')->find($request->mitra_id);
+        }
+
+        if (!$mitra) {
+            $mitra = User::where('role', 'mitra')->first();
+        }
 
         if (!$mitra) {
             return response()->json(['error' => 'Tidak ada mitra yang terdaftar.'], 422);
