@@ -1501,205 +1501,100 @@
     <!-- TAB 2: KONTRAK PRA-PANEN (MOCKED HIGH-FIDELITY PRE-HARVEST LISTINGS) -->
     <div id="preHarvestGrid" class="market-view-pane" style="display:none;">
         <div class="row g-4 justify-content-center" id="preHarvestProductsRow">
-            
-            <!-- Pre-Harvest Card 1: Kubis -->
-            <div class="col-12 col-md-4 col-lg-4 product-card-col fade-in" data-name="kubis sayur segar" data-cat="sayur" data-mitra="kelompok tani garut" data-loc="jawa barat">
-                <div class="card-product-premium border border-gray-150 rounded-4 overflow-hidden bg-white shadow-sm p-3 h-100" style="border-radius: 20px;">
-                    <div class="product-img-wrapper position-relative overflow-hidden mb-3" style="height: 180px; border-radius: 16px;">
-                        <img src="https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?q=80&w=600" alt="Kubis" class="w-100 h-100 object-fit-cover">
-                    </div>
-                    <div class="product-body">
-                        <!-- Sprout Avatar & Title -->
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background-color: rgba(46, 125, 50, 0.1);">
-                                <i class="bi bi-sprout text-success fs-5"></i>
-                            </div>
-                            <div>
-                                <span class="badge px-2 py-1 rounded bg-success bg-opacity-10 text-success fw-bold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px; display: inline-block;">
-                                    Sayur
-                                </span>
-                                <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.15rem; font-family: 'Plus Jakarta Sans', sans-serif;">Kubis</h5>
-                                <div class="text-muted small d-flex align-items-center gap-1" style="font-size: 0.8rem;">
-                                    <i class="bi bi-geo-alt-fill text-danger" style="font-size: 0.85rem;"></i>
-                                    <span>Garut, Jawa Barat</span>
-                                    <span class="mx-1">•</span>
-                                    <span>Est: 7 hari</span>
+            @forelse($products as $product)
+                @php
+                    $imagePath = 'storage/' . $product->image;
+                    if (!file_exists(public_path($imagePath)) || empty($product->image)) {
+                        if (str_contains(strtolower($product->name), 'merah')) {
+                            $imagePath = 'https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=600';
+                        } elseif (str_contains(strtolower($product->name), 'pandan') || str_contains(strtolower($product->name), 'wangi') || str_contains(strtolower($product->name), 'organik')) {
+                            $imagePath = 'https://images.unsplash.com/photo-1536304997881-a372c179924b?q=80&w=600';
+                        } elseif (str_contains(strtolower($product->name), 'ketan')) {
+                            $imagePath = 'https://images.unsplash.com/photo-1596450514735-111a2fe02935?q=80&w=600';
+                        } else {
+                            $imagePath = 'https://images.unsplash.com/photo-1536304997881-a372c179924b?q=80&w=600';
+                        }
+                    } else {
+                        $imagePath = asset($imagePath);
+                    }
+                @endphp
+                
+                <div class="col-12 col-md-4 col-lg-4 product-card-col fade-in" 
+                     data-name="{{ strtolower($product->name) }}" 
+                     data-mitra="{{ strtolower($product->user->name ?? '') }}"
+                     data-cat="{{ strtolower($product->category) }}" 
+                     data-loc="{{ strtolower($product->location ?? $product->user->address ?? 'Jawa Tengah') }}">
+                    
+                    <div class="card-product-premium border border-gray-150 rounded-4 overflow-hidden bg-white shadow-sm p-3 h-100" style="border-radius: 20px;">
+                        <div class="product-img-wrapper position-relative overflow-hidden mb-3" style="height: 180px; border-radius: 16px;">
+                            <img src="{{ $imagePath }}" alt="{{ $product->name }}" class="w-100 h-100 object-fit-cover">
+                        </div>
+                        <div class="product-body">
+                            <!-- Sprout Avatar & Title -->
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px; background-color: rgba(46, 125, 50, 0.1);">
+                                    <i class="bi bi-sprout text-success fs-5"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <span class="badge px-2 py-1 rounded bg-success bg-opacity-10 text-success fw-bold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px; display: inline-block;">
+                                        {{ $product->category }}
+                                    </span>
+                                    <h5 class="fw-bold mb-0 text-dark text-truncate" style="font-size: 1.15rem; font-family: 'Plus Jakarta Sans', sans-serif;" title="{{ $product->name }}">{{ $product->name }}</h5>
+                                    <div class="text-muted small d-flex align-items-center gap-1 text-truncate" style="font-size: 0.8rem;">
+                                        <i class="bi bi-geo-alt-fill text-danger" style="font-size: 0.85rem;"></i>
+                                        <span>{{ $product->location ?? $product->user->address ?? 'Jawa Tengah' }}</span>
+                                        <span class="mx-1">•</span>
+                                        <span>Est: 14 hari</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Price Row -->
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="fw-extrabold text-dark mb-0" style="font-size: 1.4rem; font-weight: 800;">Rp 3.500<span style="font-size: 0.85rem; font-weight: 500; color: #777;">/kg</span></h4>
-                            <span class="badge d-flex align-items-center gap-1 px-2.5 py-1.5 rounded-pill" style="background-color: rgba(22, 101, 52, 0.08); color: #166534; font-size: 0.75rem; border: 1px solid rgba(22, 101, 52, 0.15); font-weight: 600;">
-                                <i class="bi bi-patch-check-fill text-success"></i> Verified
-                            </span>
-                        </div>
-
-                        <!-- Tonnage & Rating Row -->
-                        <div class="d-flex justify-content-between align-items-center mb-3 text-muted" style="font-size: 0.82rem;">
-                            <div class="d-flex align-items-center gap-1.5">
-                                <i class="bi bi-hourglass-split text-secondary"></i>
-                                <span>Tonase: <strong class="text-dark">12 Ton</strong> <span class="small text-muted" style="font-size: 0.7rem;">(12.000 Kg)</span></span>
+                            <!-- Price Row -->
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="fw-extrabold text-dark mb-0" style="font-size: 1.4rem; font-weight: 800;">Rp {{ number_format($product->price, 0, ',', '.') }}<span style="font-size: 0.85rem; font-weight: 500; color: #777;">/kg</span></h4>
+                                <span class="badge d-flex align-items-center gap-1 px-2.5 py-1.5 rounded-pill" style="background-color: rgba(22, 101, 52, 0.08); color: #166534; font-size: 0.75rem; border: 1px solid rgba(22, 101, 52, 0.15); font-weight: 600;">
+                                    <i class="bi bi-patch-check-fill text-success"></i> Verified
+                                </span>
                             </div>
-                            <div class="d-flex align-items-center gap-1 text-warning">
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <span class="text-dark fw-bold">4.8</span> <span class="text-muted small" style="font-size: 0.7rem;">(6 deal)</span>
+
+                            <!-- Tonnage & Rating Row -->
+                            <div class="d-flex justify-content-between align-items-center mb-3 text-muted" style="font-size: 0.82rem;">
+                                <div class="d-flex align-items-center gap-1.5">
+                                    <i class="bi bi-hourglass-split text-secondary"></i>
+                                    <span>Tonase: <strong class="text-dark">{{ $product->stock }} kg</strong></span>
+                                </div>
+                                <div class="d-flex align-items-center gap-1 text-warning">
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <span class="text-dark fw-bold">4.9</span> <span class="text-muted small" style="font-size: 0.7rem;">({{ $product->sold_quantity }} deal)</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Action Buttons -->
-                        <div class="d-flex gap-2 mb-3">
-                            <button class="btn w-50 py-2 fw-bold" style="border: 1.5px solid #2e7d32; color: #2e7d32; border-radius: 10px; font-size: 0.85rem; background: white; transition: 0.2s;" onmouseover="this.style.backgroundColor='#f4fdf6'" onmouseout="this.style.backgroundColor='white'">
-                                Lihat Detail
-                            </button>
-                            <button class="btn btn-success w-50 py-2 fw-bold" style="background-color: #2e7d32; border-color: #2e7d32; border-radius: 10px; font-size: 0.85rem; transition: 0.2s;" onclick="openBidModal('Kubis', 3500, 'Kelompok Tani Garut', 12000, '7 hari')">
-                                Ajukan Penawaran
-                            </button>
-                        </div>
+                            <!-- Action Buttons -->
+                            <div class="d-flex gap-2 mb-3">
+                                <button class="btn w-50 py-2 fw-bold" style="border: 1.5px solid #2e7d32; color: #2e7d32; border-radius: 10px; font-size: 0.85rem; background: white; transition: 0.2s;" onmouseover="this.style.backgroundColor='#f4fdf6'" onmouseout="this.style.backgroundColor='white'">
+                                    Lihat Detail
+                                </button>
+                                <button class="btn btn-success w-50 py-2 fw-bold" style="background-color: #2e7d32; border-color: #2e7d32; border-radius: 10px; font-size: 0.85rem; transition: 0.2s;" 
+                                        onclick="openBidModal('{{ addslashes($product->name) }}', {{ (int)$product->price }}, '{{ addslashes($product->user->name ?? 'Mitra PanenHub') }}', {{ $product->stock }}, '14 hari', {{ $product->user_id ?? 'null' }})">
+                                    Ajukan Penawaran
+                                </button>
+                            </div>
 
-                        <!-- DP Lock Pill -->
-                        <div class="text-center">
-                            <span class="badge py-1.5 px-3 rounded-pill text-uppercase" style="background-color: #f1f5f9; color: #64748b; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">
-                                DP LOCK: 20%
-                            </span>
+                            <!-- DP Lock Pill -->
+                            <div class="text-center">
+                                <span class="badge py-1.5 px-3 rounded-pill text-uppercase" style="background-color: #f1f5f9; color: #64748b; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">
+                                    DP LOCK: 20%
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Pre-Harvest Card 2: Cabai Rawit Merah -->
-            <div class="col-12 col-md-4 col-lg-4 product-card-col fade-in" data-name="cabai rawit merah segar" data-cat="sayur" data-mitra="kelompok tani brebes" data-loc="jawa tengah">
-                <div class="card-product-premium border border-gray-150 rounded-4 overflow-hidden bg-white shadow-sm p-3 h-100" style="border-radius: 20px;">
-                    <div class="product-img-wrapper position-relative overflow-hidden mb-3" style="height: 180px; border-radius: 16px;">
-                        <img src="https://images.unsplash.com/photo-1588252303782-cb80119cb665?q=80&w=600" alt="Cabai Rawit Merah" class="w-100 h-100 object-fit-cover">
-                    </div>
-                    <div class="product-body">
-                        <!-- Sprout Avatar & Title -->
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background-color: rgba(46, 125, 50, 0.1);">
-                                <i class="bi bi-sprout text-success fs-5"></i>
-                            </div>
-                            <div>
-                                <span class="badge px-2 py-1 rounded bg-success bg-opacity-10 text-success fw-bold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px; display: inline-block;">
-                                    Sayur
-                                </span>
-                                <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.15rem; font-family: 'Plus Jakarta Sans', sans-serif;">Cabai Rawit Merah</h5>
-                                <div class="text-muted small d-flex align-items-center gap-1" style="font-size: 0.8rem;">
-                                    <i class="bi bi-geo-alt-fill text-danger" style="font-size: 0.85rem;"></i>
-                                    <span>Brebes, Jawa Tengah</span>
-                                    <span class="mx-1">•</span>
-                                    <span>Est: 5 hari</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Price Row -->
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="fw-extrabold text-dark mb-0" style="font-size: 1.4rem; font-weight: 800;">Rp 40.000<span style="font-size: 0.85rem; font-weight: 500; color: #777;">/kg</span></h4>
-                            <span class="badge d-flex align-items-center gap-1 px-2.5 py-1.5 rounded-pill" style="background-color: rgba(22, 101, 52, 0.08); color: #166534; font-size: 0.75rem; border: 1px solid rgba(22, 101, 52, 0.15); font-weight: 600;">
-                                <i class="bi bi-patch-check-fill text-success"></i> Verified
-                            </span>
-                        </div>
-
-                        <!-- Tonnage & Rating Row -->
-                        <div class="d-flex justify-content-between align-items-center mb-3 text-muted" style="font-size: 0.82rem;">
-                            <div class="d-flex align-items-center gap-1.5">
-                                <i class="bi bi-hourglass-split text-secondary"></i>
-                                <span>Tonase: <strong class="text-dark">1.2 Ton</strong> <span class="small text-muted" style="font-size: 0.7rem;">(1.200 Kg)</span></span>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 text-warning">
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <span class="text-dark fw-bold">4.8</span> <span class="text-muted small" style="font-size: 0.7rem;">(11 deal)</span>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="d-flex gap-2 mb-3">
-                            <button class="btn w-50 py-2 fw-bold" style="border: 1.5px solid #2e7d32; color: #2e7d32; border-radius: 10px; font-size: 0.85rem; background: white; transition: 0.2s;" onmouseover="this.style.backgroundColor='#f4fdf6'" onmouseout="this.style.backgroundColor='white'">
-                                Lihat Detail
-                            </button>
-                            <button class="btn btn-success w-50 py-2 fw-bold" style="background-color: #2e7d32; border-color: #2e7d32; border-radius: 10px; font-size: 0.85rem; transition: 0.2s;" onclick="openBidModal('Cabai Rawit Merah', 40000, 'Kelompok Tani Brebes', 1200, '5 hari')">
-                                Ajukan Penawaran
-                            </button>
-                        </div>
-
-                        <!-- DP Lock Pill -->
-                        <div class="text-center">
-                            <span class="badge py-1.5 px-3 rounded-pill text-uppercase" style="background-color: #f1f5f9; color: #64748b; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">
-                                DP LOCK: 20%
-                            </span>
-                        </div>
-                    </div>
+            @empty
+                <div class="col-12 text-center py-5 text-muted">
+                    <i class="bi bi-basket fs-1 mb-3 d-block text-success"></i>
+                    <h5>Belum Ada Hasil Tani untuk Penawaran Kontrak</h5>
                 </div>
-            </div>
-
-            <!-- Pre-Harvest Card 3: Apel Malang -->
-            <div class="col-12 col-md-4 col-lg-4 product-card-col fade-in" data-name="apel malang manis" data-cat="buah" data-mitra="kelompok tani batu" data-loc="jawa timur">
-                <div class="card-product-premium border border-gray-150 rounded-4 overflow-hidden bg-white shadow-sm p-3 h-100" style="border-radius: 20px;">
-                    <div class="product-img-wrapper position-relative overflow-hidden mb-3" style="height: 180px; border-radius: 16px;">
-                        <img src="https://images.unsplash.com/photo-1619546813926-a78fa6372cd2?q=80&w=600" alt="Apel Malang" class="w-100 h-100 object-fit-cover">
-                    </div>
-                    <div class="product-body">
-                        <!-- Sprout Avatar & Title -->
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background-color: rgba(46, 125, 50, 0.1);">
-                                <i class="bi bi-sprout text-success fs-5"></i>
-                            </div>
-                            <div>
-                                <span class="badge px-2 py-1 rounded bg-success bg-opacity-10 text-success fw-bold text-uppercase mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px; display: inline-block;">
-                                    Buah
-                                </span>
-                                <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.15rem; font-family: 'Plus Jakarta Sans', sans-serif;">Apel Malang</h5>
-                                <div class="text-muted small d-flex align-items-center gap-1" style="font-size: 0.8rem;">
-                                    <i class="bi bi-geo-alt-fill text-danger" style="font-size: 0.85rem;"></i>
-                                    <span>Batu, Malang</span>
-                                    <span class="mx-1">•</span>
-                                    <span>Est: 20 hari</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Price Row -->
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="fw-extrabold text-dark mb-0" style="font-size: 1.4rem; font-weight: 800;">Rp 15.000<span style="font-size: 0.85rem; font-weight: 500; color: #777;">/kg</span></h4>
-                            <span class="badge d-flex align-items-center gap-1 px-2.5 py-1.5 rounded-pill" style="background-color: rgba(22, 101, 52, 0.08); color: #166534; font-size: 0.75rem; border: 1px solid rgba(22, 101, 52, 0.15); font-weight: 600;">
-                                <i class="bi bi-patch-check-fill text-success"></i> Verified
-                            </span>
-                        </div>
-
-                        <!-- Tonnage & Rating Row -->
-                        <div class="d-flex justify-content-between align-items-center mb-3 text-muted" style="font-size: 0.82rem;">
-                            <div class="d-flex align-items-center gap-1.5">
-                                <i class="bi bi-hourglass-split text-secondary"></i>
-                                <span>Tonase: <strong class="text-dark">8 Ton</strong> <span class="small text-muted" style="font-size: 0.7rem;">(8.000 Kg)</span></span>
-                            </div>
-                            <div class="d-flex align-items-center gap-1 text-warning">
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <span class="text-dark fw-bold">4.8</span> <span class="text-muted small" style="font-size: 0.7rem;">(10 deal)</span>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="d-flex gap-2 mb-3">
-                            <button class="btn w-50 py-2 fw-bold" style="border: 1.5px solid #2e7d32; color: #2e7d32; border-radius: 10px; font-size: 0.85rem; background: white; transition: 0.2s;" onmouseover="this.style.backgroundColor='#f4fdf6'" onmouseout="this.style.backgroundColor='white'">
-                                Lihat Detail
-                            </button>
-                            <button class="btn btn-success w-50 py-2 fw-bold" style="background-color: #2e7d32; border-color: #2e7d32; border-radius: 10px; font-size: 0.85rem; transition: 0.2s;" onclick="openBidModal('Apel Malang', 15000, 'Kelompok Tani Batu', 8000, '20 hari')">
-                                Ajukan Penawaran
-                            </button>
-                        </div>
-
-                        <!-- DP Lock Pill -->
-                        <div class="text-center">
-                            <span class="badge py-1.5 px-3 rounded-pill text-uppercase" style="background-color: #f1f5f9; color: #64748b; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;">
-                                DP LOCK: 20%
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            @endforelse
         </div>
 
         <!-- PRE-HARVEST PAGINATION CONTROLS -->
