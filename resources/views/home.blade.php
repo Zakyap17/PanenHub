@@ -273,6 +273,7 @@
                 <div class="d-flex align-items-center gap-3">
                     <span class="fw-bold d-none d-lg-inline">Hai, {{ Auth::user()->name }}</span>
                     <a href="{{ route('buyer.orders') }}" class="text-dark text-decoration-none fw-bold small d-none d-sm-inline"><i class="bi bi-bag-check me-1"></i> Pesanan</a>
+                    <a href="{{ route('chat.index') }}" class="text-dark text-decoration-none fw-bold small d-none d-sm-inline"><i class="bi bi-chat-dots me-1"></i> Chat Penawaran</a>
                     @if(Auth::user()->role === 'mitra')
                         <a href="{{ route('mitra.products') }}" class="btn btn-outline-success btn-sm rounded-pill px-3 fw-bold">Mitra</a>
                     @endif
