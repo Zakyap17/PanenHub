@@ -108,6 +108,70 @@
             margin-top: 20px;
             box-shadow: 0 10px 20px rgba(46, 125, 50, 0.2);
         }
+        
+        @media (max-width: 575.98px) {
+            .navbar .container {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .page-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+                padding: 15px !important;
+            }
+            .order-header > div {
+                width: 100%;
+                border-right: none !important;
+                padding-right: 0 !important;
+            }
+            .order-header .order-status {
+                text-align: left;
+            }
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+                padding: 15px 0 !important;
+            }
+            .product-details {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 10px;
+                width: 100% !important;
+            }
+            .product-details .text-end {
+                text-align: left !important;
+                width: 100%;
+            }
+            .order-footer {
+                padding: 15px !important;
+            }
+            .order-footer > div {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+                width: 100%;
+            }
+            .order-footer .d-flex.align-items-center.flex-wrap.gap-4 {
+                width: 100% !important;
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 15px;
+            }
+            .order-footer .text-end {
+                text-align: left !important;
+                width: 100%;
+            }
+            .order-footer .d-flex.flex-column {
+                width: 100% !important;
+            }
+        }
     </style>
 </head>
 <body>

@@ -25,6 +25,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required',
+            'location' => 'nullable|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -36,6 +37,7 @@ class ProductController extends Controller
             'user_id' => Auth::id() ?? 1,
             'name' => $request->name,
             'category' => $request->category,
+            'location' => $request->location,
             'price' => $request->price,
             'stock' => $request->stock,
             'image' => $imagePath,
@@ -71,6 +73,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required',
+            'location' => 'nullable|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -78,6 +81,7 @@ class ProductController extends Controller
 
         $product->name = $request->name;
         $product->category = $request->category;
+        $product->location = $request->location;
         $product->price = $request->price;
         $product->stock = $request->stock;
 

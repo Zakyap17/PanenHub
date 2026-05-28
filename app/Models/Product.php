@@ -12,6 +12,7 @@ class Product extends Model
         'user_id', 
         'name', 
         'category', 
+        'location',
         'price', 
         'stock', 
         'image'
@@ -20,6 +21,16 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function getSoldQuantityAttribute()
+    {
+        return $this->orderItems()->sum('quantity');
     }
 
 }
